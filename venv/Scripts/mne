@@ -1,0 +1,5 @@
+#!C:\Users\elevchenko\PycharmProjects\inter-subject_correlation\venv\Scripts\python.exe
+# -*- coding: utf-8 -*-
+
+import mne
+mne.commands.utils.main()
