@@ -30,6 +30,7 @@ def plot_isc(isc_all):
         plt.ylabel('ISC')
         plt.title('ISC per second for each condition')
 
+
     # plot ISC_bysubject
     fig, ax = plt.subplots()
     ax.set_title('ISC by subject for each condition')
@@ -39,5 +40,5 @@ def plot_isc(isc_all):
     ax.set_xlabel('Conditions', fontweight='bold')
     ax.boxplot(a)
 
-# plot_isc(isc_results)
+plot_isc(isc_results)
 

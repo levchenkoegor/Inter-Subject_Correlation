@@ -1,5 +1,4 @@
 import numpy as np
-import numpy.matlib as npm
 from scipy.linalg import eigh
 from timeit import default_timer
 
@@ -48,7 +47,7 @@ def train_cca(data):
                            for i in range(0, N)
                            for j in range(0, N) if i != j], axis=0)
 
-    #
+    # Divide by number of condition
     Rw, Rb = Rw/C, Rb/C
 
     # Regularization
@@ -148,55 +147,4 @@ def apply_cca(X, W, fs):
     print(f'Elapsed time: {round(stop - start)} seconds.')
 
     return ISC, ISC_persecond, ISC_bysubject, A
-
-# def shuffle_in_time():
-#    return 0
-
-def phaserandomized(X):
-    """Calculates phase randomized data based on real data. The full algorithm is described here Pritchard 1991.
-
-        Parameters:
-        -------
-        X : ndarray
-            3-D numpy array structured like (subject, channel, sample)
-
-        Returns:
-        -------
-        Xr : ndarray
-            3-D numpy array structured like (subject, channel, sample) with random phase added
-
-    """
-    start = default_timer()
-
-    N, D, T = X.shape
-    print(f'\n{N} subjects, {D} sensors and {T} samples')
-
-    Xr = np.empty((N, D, T))
-
-    for subject in range(0, N):
-
-        Xfft = np.fft.rfft(X[subject, :, :], T)
-        ampl = np.abs(Xfft)
-        phi = np.angle(Xfft)
-        # np.random.seed(42)
-        phi_r = 4 * np.arccos(0) * np.random.rand(1, int(T / 2 - 1)) - 2 * np.arccos(0)
-        Xfft[:, 1:int(T / 2)] = ampl[:, 1:int(T / 2)] * np.exp(
-            np.sqrt(-1 + 0j) * (phi[:, 1:int(T / 2)] + npm.repmat(phi_r, D, 1)))
-        Xr[subject, :, :] = np.fft.irfft(Xfft, T)
-
-    stop = default_timer()
-    print(f'Elapsed time: {round(stop - start)} seconds.')
-
-    return Xr
-
-# Test
-X = dict(Sin=np.random.rand(10, 32, 512*60))
-X['Sin'][:,24,:] = np.sin(np.linspace(-np.pi, np.pi, 512*60))
-[W, ISC_overall] = train_cca(X)
-
-isc_results = dict()
-for cond_key, cond_values in X.items():
-    isc_results[str(cond_key)] = dict(zip(['ISC', 'ISC_persecond', 'ISC_bysubject', 'A'],
-                                          apply_cca(cond_values, W, 250)))
-
 
