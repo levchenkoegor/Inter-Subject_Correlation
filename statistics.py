@@ -3,6 +3,7 @@ from timeit import default_timer
 import numpy.matlib as npm
 
 
+
 def shuffle_in_time(data, window, fs):
     data_shuffled = dict()
 
@@ -21,7 +22,6 @@ def shuffle_in_time(data, window, fs):
         data_shuffled[str(cond)] = cond_shuffled
 
     return data_shuffled
-
 
 def phaserandomized(X):
     """Calculates phase randomized data based on real data. The full algorithm is described here Pritchard 1991.

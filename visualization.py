@@ -22,23 +22,81 @@ def plot_isc(isc_all):
     plt.show()
 
     # plot ISC_persecond
-    plt.figure()
     for cond in isc_all.values():
-        plt.plot(cond['ISC_persecond'][0])
-        plt.legend(isc_all.keys())
-        plt.xlabel('Time (s)')
-        plt.ylabel('ISC')
-        plt.title('ISC per second for each condition')
+        for comp_i in range(0, 3):
+            plt.subplot(3, 1, comp_i+1)
+            plt.plot(cond['ISC_persecond'][comp_i])
+            plt.legend(isc_all.keys())
+            plt.xlabel('Time (s)')
+            plt.ylabel('ISC')
+            #plt.title('ISC per second for each condition')
 
 
     # plot ISC_bysubject
-    fig, ax = plt.subplots()
-    ax.set_title('ISC by subject for each condition')
-    a = [cond['ISC_bysubject'][0, :] for cond in isc_all.values()]
-    ax.set_xticklabels(isc_all.keys())
-    ax.set_ylabel('ISC')
-    ax.set_xlabel('Conditions', fontweight='bold')
-    ax.boxplot(a)
+    # fig, ax = plt.subplots()
+    # ax.set_title('ISC by subject for each condition')
+    # a = [cond['ISC_bysubject'][0, :] for cond in isc_all.values()]
+    # ax.set_xticklabels(isc_all.keys())
+    # ax.set_ylabel('ISC')
+    # ax.set_xlabel('Conditions', fontweight='bold')
+    # ax.boxplot(a)
+
+    # # MAKE WITH DOTS:
+    # for i in [1, 2]:
+    #     y = [isc_results['Gr1']['ISC_bysubject'][0], isc_results['Gr1']['ISC_bysubject'][0]][i - 1]
+    #     x = np.random.normal(i, 0.02, len(y))
+    #     plt.plot(x, y, 'r.', alpha=0.9, color='black', markersize=12)
 
 plot_isc(isc_results)
+sign = [pseudo_grs_difference_c1_095]
+
+for cond in isc_results.values():
+    for comp_i in range(0, 1):
+        plt.subplot(3, 1, comp_i + 1)
+        plt.plot(cond['ISC_persecond'][comp_i])
+        sign = cond['ISC_persecond'][comp_i] > 0.1
+        #t = np.where(cond['ISC_persecond'][comp_i] > 0.1)
+        t = np.where(cond['ISC_persecond'][comp_i][sign])
+        plt.plot(np.transpose(t), cond['ISC_persecond'][comp_i][sign], 'x', color='k')
+        #plt.fill_between(list(range(0, 176)), 0, 0.1, facecolor='gray')
+        plt.legend([list(isc_results.keys())[0]] + ['Significant'] + [list(isc_results.keys())[1]])
+        plt.xlabel('Time (s)')
+        plt.ylabel('ISC')
+
+
+### FOR comp=1
+
+plot_isc(isc_results)
+
+sign = pseudo_grs_difference_c1_095
+comp_i = 0
+plt.figure()
+
+for cond in isc_results.values():
+    plt.subplot(3, 1, 1)
+    plt.plot(cond['ISC_persecond'][comp_i])
+
+    t = [i for i, x in enumerate(pseudo_grs_difference_c1_095) if x]
+    plt.plot(np.transpose(t), cond['ISC_persecond'][comp_i][sign], 'x', color='k')
+
+    #plt.legend([list(isc_results.keys())[0]] + ['Significant'] + [list(isc_results.keys())[1]])
+    plt.xlabel('Time (s)')
+    plt.ylabel('ISC')
+
+plt.figure()
+plt.plot(np.mean(pseudo_gr1_all_shuffles, 0))
+plt.plot(np.mean(pseudo_gr2_all_shuffles, 0))
+
+plt.figure()
+for shuffle in range(0, 48):
+    plt.plot(pseudo_gr1_all_shuffles[shuffle, :])
+
+
+plt.figure()
+for shuffle in range(0, 48):
+    plt.plot(pseudo_gr2_all_shuffles[shuffle, :])
+
+
+
+
 

@@ -26,7 +26,7 @@ def train_cca(data):
     start = default_timer()
 
     C = len(data.keys())
-    print(f'There are {C} conditions')
+    print(f'train_cca - calculations started. There are {C} conditions')
 
     gamma = 0.1
     Rw, Rb = 0, 0
@@ -89,6 +89,7 @@ def apply_cca(X, W, fs):
     """
 
     start = default_timer()
+    print('apply_cca - calculations started')
 
     N, D, T = X.shape
     # gamma = 0.1
@@ -115,6 +116,7 @@ def apply_cca(X, W, fs):
     A = np.linalg.solve(Rw @ W, np.transpose(W) @ Rw @ W)
 
     # ISC by subject
+    print('by subject is calculating')
     ISC_bysubject = np.empty((D, N))
 
     for subj_k in range(0, N):
@@ -127,6 +129,7 @@ def apply_cca(X, W, fs):
         ISC_bysubject[:, subj_k] = np.diag(np.transpose(W) @ Rb @ W) / np.diag(np.transpose(W) @ Rw @ W)
 
     # ISC per second
+    print('by persecond is calculating')
     ISC_persecond = np.empty((D, int(T / fs) + 1))
     window_i = 0
 
