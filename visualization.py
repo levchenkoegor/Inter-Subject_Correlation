@@ -22,10 +22,11 @@ def plot_isc(isc_all):
     plt.show()
 
     # plot ISC_persecond
+    plt.figure()
     for cond in isc_all.values():
         for comp_i in range(0, 3):
             plt.subplot(3, 1, comp_i+1)
-            plt.plot(cond['ISC_persecond'][comp_i])
+            plt.plot(cond['ISC_persecond'][comp_i][:-2])
             plt.legend(isc_all.keys())
             plt.xlabel('Time (s)')
             plt.ylabel('ISC')
@@ -48,7 +49,9 @@ def plot_isc(isc_all):
     #     plt.plot(x, y, 'r.', alpha=0.9, color='black', markersize=12)
 
 plot_isc(isc_results)
-sign = [pseudo_grs_difference_c1_095]
+
+import matplotlib.pyplot as plt
+sign = [gr_win_difference_c1_099975]
 
 for cond in isc_results.values():
     for comp_i in range(0, 1):
@@ -68,7 +71,7 @@ for cond in isc_results.values():
 
 plot_isc(isc_results)
 
-sign = pseudo_grs_difference_c1_095
+sign = gr_win_difference_c1_099975
 comp_i = 0
 plt.figure()
 
@@ -76,10 +79,10 @@ for cond in isc_results.values():
     plt.subplot(3, 1, 1)
     plt.plot(cond['ISC_persecond'][comp_i])
 
-    t = [i for i, x in enumerate(pseudo_grs_difference_c1_095) if x]
+    t = [i for i, x in enumerate(sign) if x]
     plt.plot(np.transpose(t), cond['ISC_persecond'][comp_i][sign], 'x', color='k')
 
-    #plt.legend([list(isc_results.keys())[0]] + ['Significant'] + [list(isc_results.keys())[1]])
+    plt.legend([list(isc_results.keys())[0]] + ['Significant'] + [list(isc_results.keys())[1]])
     plt.xlabel('Time (s)')
     plt.ylabel('ISC')
 
@@ -96,7 +99,21 @@ plt.figure()
 for shuffle in range(0, 48):
     plt.plot(pseudo_gr2_all_shuffles[shuffle, :])
 
+p_vals = []
+for window in range(0, len(pseudo_gr1_2_persecond_diff[0, :176])-1):
 
+    diff = isc_results['Gr1']['ISC_persecond'][0][window] - isc_results['Gr2']['ISC_persecond'][0][window]
+
+    plt.figure()
+    plt.title('Comp1 window ' + str(window))
+    plt.hist(pseudo_gr1_2_persecond_diff[:, window])
+    plt.hist(pseudo_gr2_1_persecond_diff[:, window])
+    plt.plot(diff, 0, 'ro', markersize=14)
+
+    p_val = (np.sum(np.abs([pseudo_gr1_2_persecond_diff[:, window], pseudo_gr2_1_persecond_diff[:, window]]) > np.abs(diff)) + 1) / 60
+    p_vals.append(p_val)
+    if p_val < 0.05:
+        print(f'Window {window} with p-value equal to {p_val}')
 
 
 
