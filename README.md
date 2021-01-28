@@ -28,6 +28,6 @@ for cond_key, cond_values in X.items():
 For the visualization you should just run `visualization.py` after spatial filters are applied.
 
 #### Some features will be added soon:
-1. Topoplot visualization
-2. Adjusting for multiple comparison
-3. Simultaneous video playing and `ISC_persecond`
+1. Scalp projections of spatial filters.
+2. Statistical tests.
+3. Visualisation with stimuli.
