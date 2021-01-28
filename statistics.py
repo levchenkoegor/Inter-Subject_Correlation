@@ -1,7 +1,7 @@
-import numpy as np
 from timeit import default_timer
-import numpy.matlib as npm
 
+import numpy as np
+import numpy.matlib as npm
 
 
 def shuffle_in_time(data, window, fs):
@@ -23,7 +23,8 @@ def shuffle_in_time(data, window, fs):
 
     return data_shuffled
 
-def phaserandomized(X):
+
+def phase_randomized(X):
     """Calculates phase randomized data based on real data. The full algorithm is described here Pritchard 1991.
 
         Parameters:
