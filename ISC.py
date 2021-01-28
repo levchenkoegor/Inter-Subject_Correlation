@@ -1,6 +1,7 @@
+from timeit import default_timer
+
 import numpy as np
 from scipy.linalg import eigh
-from timeit import default_timer
 
 
 def train_cca(data):
