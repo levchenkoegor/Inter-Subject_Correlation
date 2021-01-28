@@ -5,6 +5,22 @@ import numpy.matlib as npm
 
 
 def shuffle_in_time(data, window, fs):
+    """Splits the time series and shuffle the order of splits.
+
+        Parameters:
+        -------
+        data : dict
+            Dictionary with keys are names of conditions and values are
+            numpy arrays structured like (subjects, channels, samples).
+        window : int
+            The length of one split.
+        fs : int
+            Frequency sampling.
+        Returns:
+        -------
+        data_shuffled : dict
+            Shuffled data with the same structure as data.
+    """
     data_shuffled = dict()
 
     for cond, values in data.items():
@@ -36,7 +52,6 @@ def phase_randomized(X):
         -------
         Xr : ndarray
             3-D numpy array structured like (subject, channel, sample) with random phase added
-
     """
     start = default_timer()
 
